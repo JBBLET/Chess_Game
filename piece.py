@@ -1,26 +1,23 @@
 import board.py
 import numpy as np
+
 class Piece : 
-    def __init__(self,x,y,couleur,board=None):
-        self.__couleur = couleur
-        self.__position = np.array((x,y))
-        self.__moves= []
-        if self.__couleur=='blanc':
-            self.__direction=-1
-        else:
-            self.__direction=+1
-        self.__value = 0
-        self.__board = board
+    def __init__(self,white=False):
+        self.__is_white = white
+        self.__is_killed = False
 
+    def is_white(self):
+        return self.__is_white
 
-    def getPosition(self):
-        return (self.__position)
+    def is_killed(self):
+        return self.__is_killed
     
-    def setPostion(self,x,y):
-        self.__position = np.array(x,y)
-    
-    def getMoves(self):
-        return self.__movesLegal
-    
-    def setBoard(self,board):
-        self.__board = board
+    def set_killed(self,killed):
+        self.__is_killed = killed
+
+    def set_white(self,white):
+        self.__is_white = white
+
+    def can_move(self,board,start,end):
+        #return if a move is legal
+        return False
