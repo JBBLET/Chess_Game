@@ -5,7 +5,10 @@ class Piece :
         self.__couleur = couleur
         self.__position = np.array((x,y))
         self.__moves= []
-        self.direction = []
+        if self.__couleur=='blanc':
+            self.__direction=-1
+        else:
+            self.__direction=+1
         self.__value = 0
         self.__board = board
 

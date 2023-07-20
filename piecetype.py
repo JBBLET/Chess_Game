@@ -6,7 +6,7 @@ class Pawn(Piece):
 
     def __init__(self,x,y,couleur,board):
         super().__init__(x,y,couleur,board)
-        self.__firstmove == True
+        self.__firstmove = True
         if self.__couleur == 'black':
             self.__direction = np.array([(0,-1)])
         else : 
