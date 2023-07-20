@@ -69,6 +69,8 @@ class Bishops(Piece):
             if checked_spot.get_piece()!=None:
                 print("There is a piece in between in :({},{})".format(checked_spot_X,checked_spot_Y))
                 return False
+            checked_spot_X += dir_X
+            checked_spot_Y += dir_Y
         return True
     
 class Knight(piece):
@@ -103,18 +105,27 @@ class Rook(piece):
     def no_piece_in_between(self,board,start,end):
         start_pos_X, start_pos_Y = start.get_pos_X(), start.get_pos_Y()
         end_pos_X, end_pos_Y = end.get_pos_X(), end.get_pos_X()
-        if start_pos_X<=end_pos_X:
+
+        if start_pos_X<end_pos_X:
             dir_X=1
-        else:
+            dir_Y=0
+        elif start_pos_X>end_pos_X:
             dir_X=-1
-        if start_pos_Y<=end_pos_Y:
-            dir_Y=1
+            dir_Y=0
         else:
-            dir_Y=-1
+            dir_X=0
+            if start_pos_Y<=end_pos_Y:
+                dir_Y=1
+            else:
+                dir_Y=-1
+
         checked_spot_X, checked_spot_Y = start_pos_X+dir_X,start_pos_Y+dir_Y
+
         while  checked_spot_X!=end_pos_X:
             checked_spot = board.get_spot(checked_spot_X,checked_spot_Y)
             if checked_spot.get_piece()!=None:
                 print("There is a piece in between in :({},{})".format(checked_spot_X,checked_spot_Y))
                 return False
+            checked_spot_X += dir_X
+            checked_spot_Y += dir_Y
         return True
