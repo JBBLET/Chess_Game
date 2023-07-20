@@ -55,22 +55,23 @@ class Bishops(Piece):
     def no_piece_in_between(self,board,start,end):
         start_pos_X, start_pos_Y = start.get_pos_X(), start.get_pos_Y()
         end_pos_X, end_pos_Y = end.get_pos_X(), end.get_pos_X()
-        if start_pos_X<=end_pos_X:
-            dir_X=1
+        if start_pos_X==end_pos_X:
+            dir_X=0
         else:
-            dir_X=-1
-        if start_pos_Y<=end_pos_Y:
-            dir_Y=1
+            dir_X=(end_pos_X-start_pos_X)//(abs(end_pos_X-start_pos_X))
+        if start_pos_Y==end_pos_Y:
+            dir_Y=0
         else:
-            dir_Y=-1
-        checked_spot_X, checked_spot_Y = start_pos_X+dir_X,start_pos_Y+dir_Y
-        while  checked_spot_X!=end_pos_X:
-            checked_spot = board.get_spot(checked_spot_X,checked_spot_Y)
+            dir_Y=(end_pos_Y-start_pos_Y)//(abs(end_pos_Y-start_pos_Y))
+
+        checked_spot = (start_pos_X+dir_X,start_pos_Y+dir_Y)
+        while  checked_spot != (end_pos_X, end_pos_Y):
+            checked_spot = board.get_spot(checked_spot[0],checked_spot[1])
             if checked_spot.get_piece()!=None:
-                print("There is a piece in between in :({},{})".format(checked_spot_X,checked_spot_Y))
+                print("There is a piece in between in :({},{})".format(checked_spot[0],checked_spot[1]))
                 return False
-            checked_spot_X += dir_X
-            checked_spot_Y += dir_Y
+            
+            checked_spot += (dir_X, dir_Y)
         return True
     
 class Knight(piece):
@@ -106,26 +107,61 @@ class Rook(piece):
         start_pos_X, start_pos_Y = start.get_pos_X(), start.get_pos_Y()
         end_pos_X, end_pos_Y = end.get_pos_X(), end.get_pos_X()
 
-        if start_pos_X<end_pos_X:
-            dir_X=1
-            dir_Y=0
-        elif start_pos_X>end_pos_X:
-            dir_X=-1
+        if start_pos_X==end_pos_X:
+            dir_X=0
+        else:
+            dir_X=(end_pos_X-start_pos_X)//(abs(end_pos_X-start_pos_X))
+        if start_pos_Y==end_pos_Y:
             dir_Y=0
         else:
-            dir_X=0
-            if start_pos_Y<=end_pos_Y:
-                dir_Y=1
-            else:
-                dir_Y=-1
+            dir_Y=(end_pos_Y-start_pos_Y)//(abs(end_pos_Y-start_pos_Y))
 
-        checked_spot_X, checked_spot_Y = start_pos_X+dir_X,start_pos_Y+dir_Y
+        checked_spot = (start_pos_X+dir_X,start_pos_Y+dir_Y)
+        while  checked_spot != (end_pos_X, end_pos_Y):
 
-        while  checked_spot_X!=end_pos_X:
-            checked_spot = board.get_spot(checked_spot_X,checked_spot_Y)
+            checked_spot = board.get_spot(checked_spot[0],checked_spot[1])
             if checked_spot.get_piece()!=None:
-                print("There is a piece in between in :({},{})".format(checked_spot_X,checked_spot_Y))
+                print("There is a piece in between in :({},{})".format(checked_spot[0],checked_spot[1]))
                 return False
-            checked_spot_X += dir_X
-            checked_spot_Y += dir_Y
+            checked_spot += (dir_X, dir_Y)
+        return True
+
+class Queen(Piece):
+    def __init__(self,white):
+        super().__init__(white)
+
+    def can_move(self,board,start,end):
+        #We can't move to where a same color piece is
+        if end.get_piece().is_white() == self.is_white():
+            return False
+        
+        dif_x , dif_y = abs(start.get_pos_X()-end.get_pos_X()), abs(start.get_pos_Y()-end.get_pos_Y())
+        
+        if dif_x*dif_y != 0 and dif_x!=dif_y:
+            return False
+        else:
+            return(self.no_piece_in_between(board,start,end))
+    
+    def no_piece_in_between(self,board,start,end):
+
+        start_pos_X, start_pos_Y = start.get_pos_X(), start.get_pos_Y()
+        end_pos_X, end_pos_Y = end.get_pos_X(), end.get_pos_X()
+
+        if start_pos_X==end_pos_X:
+            dir_X=0
+        else:
+            dir_X=(end_pos_X-start_pos_X)//(abs(end_pos_X-start_pos_X))
+        if start_pos_Y==end_pos_Y:
+            dir_Y=0
+        else:
+            dir_Y=(end_pos_Y-start_pos_Y)//(abs(end_pos_Y-start_pos_Y))
+
+        checked_spot = (start_pos_X+dir_X,start_pos_Y+dir_Y)
+        while  checked_spot != (end_pos_X, end_pos_Y):
+            checked_spot = board.get_spot(checked_spot[0],checked_spot[1])
+            if checked_spot.get_piece()!=None:
+                print("There is a piece in between in :({},{})".format(checked_spot[0],checked_spot[1]))
+                return False
+            
+            checked_spot += (dir_X, dir_Y)
         return True
