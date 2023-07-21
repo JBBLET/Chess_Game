@@ -2,9 +2,10 @@ import board.py
 import numpy as np
 
 class Piece : 
-    def __init__(self,white=False):
+    def __init__(self,white=False,name=None):
         self.__is_white = white
         self.__is_killed = False
+        self.__name = name
 
     def is_white(self):
         return self.__is_white
@@ -21,3 +22,9 @@ class Piece :
     def can_move(self,board,start,end):
         #return if a move is legal
         return False
+    
+    def get_name(self):
+        return self.__name
+    
+    def set_name(self,name):
+        self.__name = name
