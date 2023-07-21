@@ -49,7 +49,7 @@ class Pawn(Piece):
         dif_x , dif_y = abs(start.get_pos_X()-end.get_pos_X()), abs(start.get_pos_Y()-end.get_pos_Y())
         if dif_x == 0 and dif_y == 1 and end.get_piece() == None:
             return True
-        elif dif_x == 1 and dif_y == 1 and end.get_piece().is_white() == not(self.is_white()):
+        elif dif_x == 1 and dif_y == 1 and end.get_piece().is_white() != self.is_white():
             return True
         elif dif_x == 0 and dif_y == 2:
             return(self.is_valid_first_move(board,start,end))
@@ -105,7 +105,7 @@ class Bishops(Piece):
             checked_spot_coord[1] += dir_Y
         return True
     
-class Knight(piece):
+class Knight(Piece):
     def __init__(self,white):
         super().__init__(white,"Knight")
 
@@ -118,7 +118,7 @@ class Knight(piece):
         
         return (dif_x*dif_y == 2)
     
-class Rook(piece):
+class Rook(Piece):
     def __init__(self,white):
         super().__init__(white,"Rook")
         self.__already_moved = False
