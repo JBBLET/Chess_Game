@@ -1,5 +1,5 @@
-import piece.py
-import board.py
+import piece
+import board
 import numpy as np
 
 class Pawn(Piece):
