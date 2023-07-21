@@ -11,10 +11,11 @@ class Player :
     
 class Human_player(Player):
     
-    def __init__(self,white_side):
+    def __init__(self,white_side,name):
         super().__init__()
         self.__is_human = True
         self.__white_side = white_side
+        self.__name = name
 
 class Human_player(Player):
     
