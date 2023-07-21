@@ -1,4 +1,3 @@
-from piece import piece
 import board
 import numpy as np
 
