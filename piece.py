@@ -1,6 +1,3 @@
-import board.py
-import numpy as np
-
 class Piece : 
     def __init__(self,white=False,name=None):
         self.__is_white = white
