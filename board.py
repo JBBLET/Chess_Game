@@ -8,6 +8,9 @@ class Board:
         self.__board = [[]*7]*7
         self.reset_board()
 
+    def get_board(self):
+        return self.__board
+    
     def reset_board(self):
         #Reset the board
         for i in range(8):
