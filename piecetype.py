@@ -233,11 +233,12 @@ class King(Piece):
             return(self.is_valid_castle(board,start,end))
     
     def king_not_under_attack(self,board,end):
-        #
-        for spot in board:
-            if spot!=end:
-                if spot.get_piece().is_white()!=self.is_white() and spot.get_piece().can_move(board,spot,end):
-                    return False
+        board_matrix = board.get_board()
+        for row in board_matrix:
+            for spot in row:
+                if spot!=end:
+                    if spot.get_piece().is_white()!=self.is_white() and spot.get_piece().can_move(board,spot,end):
+                        return False
         return True
 
     def is_valid_castle(self,board,start,end):

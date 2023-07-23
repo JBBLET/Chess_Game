@@ -17,7 +17,7 @@ class Human_player(Player):
         self.__white_side = white_side
         self.__name = name
 
-class Human_player(Player):
+class computer_player(Player):
     
     def __init__(self,white_side):
         super().__init__()
