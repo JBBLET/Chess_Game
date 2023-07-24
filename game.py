@@ -1,16 +1,18 @@
-import board
+from board import Board
 import player
 import move
 
 class Game:
-
     def __init__(self,player_1,player_2):
         self.__player = [player_1, player_2]
-        self.__board = board.Board()
-        self.__current_turn = player_1 if player_1.get_is_white() else player_2
+        self.__board_game = Board()
+        self.__current_turn = player_1 if player_1.get_is_white_side() else player_2
         self.__status = "Active"
         self.__moves_played = []
 
+    def get_board(self):
+        return self.__board_game.get_board()
+    
     def make_move(self, player, move):
 
         selected_piece = move.get_piece_moved()

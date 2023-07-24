@@ -2,11 +2,12 @@ import board
 import numpy as np
 
 class Piece : 
-    def __init__(self,white=False,name=None):
+    def __init__(self,white=False,name=None,img=None):
         self.__is_white = white
         self.__is_killed = False
         self.__name = name
-
+        self.__image = img
+    
     def is_white(self):
         return self.__is_white
 
@@ -29,10 +30,12 @@ class Piece :
     def set_name(self,name):
         self.__name = name
 
+    def get_image(self):
+        return self.__image
+    
 class Pawn(Piece):
-
-    def __init__(self,white):
-        super().__init__(white,"Pawn")
+    def __init__(self,white,image):
+        super().__init__(white,"Pawn",img=image)
         self.__already_moved = False
 
     def get_already_moved(self):
@@ -64,8 +67,8 @@ class Pawn(Piece):
             return True
 
 class Bishops(Piece):
-    def __init__(self,white):
-        super().__init__(white,"Bishops")
+    def __init__(self,white,image):
+        super().__init__(white,"Bishops",img=image)
 
     def can_move(self,board,start,end):
         #We can't move to where a same color piece is
@@ -106,8 +109,8 @@ class Bishops(Piece):
         return True
     
 class Knight(Piece):
-    def __init__(self,white):
-        super().__init__(white,"Knight")
+    def __init__(self,white,image):
+        super().__init__(white,"Knight",img=image)
 
     def can_move(self,board,start,end):
         #We can't move to where a same color piece is
@@ -119,8 +122,8 @@ class Knight(Piece):
         return (dif_x*dif_y == 2)
     
 class Rook(Piece):
-    def __init__(self,white):
-        super().__init__(white,"Rook")
+    def __init__(self,white,image):
+        super().__init__(white,"Rook",img=image)
         self.__already_moved = False
 
     def get_already_moved(self):
@@ -169,8 +172,8 @@ class Rook(Piece):
         return True
 
 class Queen(Piece):
-    def __init__(self,white):
-        super().__init__(white,"Queen")
+    def __init__(self,white,image):
+        super().__init__(white,"Queen",img=image)
 
     def can_move(self,board,start,end):
         #We can't move to where a same color piece is
@@ -210,8 +213,8 @@ class Queen(Piece):
         return True
     
 class King(Piece):
-    def __init__(self,white):
-        super().__init__(white,"King")
+    def __init__(self,white,image):
+        super().__init__(white,"King",img=image)
         self.__already_castle =False
 
     def get_already_castle(self):
