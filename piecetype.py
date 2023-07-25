@@ -46,15 +46,16 @@ class Pawn(Piece):
 
     def can_move(self, board, start, end):
         #We can't move to where a same color piece is
-        if end.get_piece().is_white() == self.is_white():
+        if end.get_piece()!=None and end.get_piece().is_white() == self.is_white():
             return False
         
         dif_x , dif_y = abs(start.get_pos_X()-end.get_pos_X()), abs(start.get_pos_Y()-end.get_pos_Y())
-        if dif_x == 0 and dif_y == 1 and end.get_piece() == None:
+        print(dif_x,dif_y)
+        if dif_x == 1 and dif_y == 0 and end.get_piece() == None:
             return True
-        elif dif_x == 1 and dif_y == 1 and end.get_piece().is_white() != self.is_white():
+        elif dif_x == 1 and dif_y == 1 and end.get_piece()!=None and end.get_piece().is_white() != self.is_white():
             return True
-        elif dif_x == 0 and dif_y == 2:
+        elif dif_x == 2 and dif_y == 0:
             return(self.is_valid_first_move(board,start,end))
         else:
             return False
@@ -72,11 +73,11 @@ class Bishops(Piece):
 
     def can_move(self,board,start,end):
         #We can't move to where a same color piece is
-        if end.get_piece().is_white() == self.is_white():
+        if end.get_piece()!=None and end.get_piece().is_white() == self.is_white():
             return False
         
         dif_x , dif_y = abs(start.get_pos_X()-end.get_pos_X()), abs(start.get_pos_Y()-end.get_pos_Y())
-        
+
         if dif_x!=dif_y:
             return False
         else:
@@ -85,17 +86,16 @@ class Bishops(Piece):
     def no_piece_in_between(self,board,start,end):
         #
         start_pos_X, start_pos_Y = start.get_pos_X(), start.get_pos_Y()
-        end_pos_X, end_pos_Y = end.get_pos_X(), end.get_pos_X()
-
+        end_pos_X, end_pos_Y = end.get_pos_X(), end.get_pos_Y()
         if start_pos_X==end_pos_X:
-            dir_X=0
+            return False
         else:
             dir_X=(end_pos_X-start_pos_X)//(abs(end_pos_X-start_pos_X))
         if start_pos_Y==end_pos_Y:
-            dir_Y=0
+            return False
         else:
             dir_Y=(end_pos_Y-start_pos_Y)//(abs(end_pos_Y-start_pos_Y))
-
+        print(dir_X,dir_Y)
         checked_spot_coord = [start_pos_X+dir_X,start_pos_Y+dir_Y]
 
         while  checked_spot_coord != [end_pos_X, end_pos_Y]:
@@ -103,7 +103,6 @@ class Bishops(Piece):
             if checked_spot.get_piece()!=None:
                 print("There is a piece in between in :({},{})".format(checked_spot_coord[0],checked_spot_coord[1]))
                 return False
-            
             checked_spot_coord[0] += dir_X
             checked_spot_coord[1] += dir_Y
         return True
@@ -114,7 +113,7 @@ class Knight(Piece):
 
     def can_move(self,board,start,end):
         #We can't move to where a same color piece is
-        if end.get_piece().is_white() == self.is_white():
+        if end.get_piece()!=None and end.get_piece().is_white() == self.is_white():
             return False
         
         dif_x , dif_y = abs(start.get_pos_X()-end.get_pos_X()), abs(start.get_pos_Y()-end.get_pos_Y())
@@ -134,7 +133,7 @@ class Rook(Piece):
 
     def can_move(self,board,start,end):
         #We can't move to where a same color piece is
-        if end.get_piece().is_white() == self.is_white():
+        if end.get_piece()!=None and end.get_piece().is_white() == self.is_white():
             return False
         
         dif_x , dif_y = abs(start.get_pos_X()-end.get_pos_X()), abs(start.get_pos_Y()-end.get_pos_Y())
@@ -147,7 +146,7 @@ class Rook(Piece):
     def no_piece_in_between(self,board,start,end):
         #
         start_pos_X, start_pos_Y = start.get_pos_X(), start.get_pos_Y()
-        end_pos_X, end_pos_Y = end.get_pos_X(), end.get_pos_X()
+        end_pos_X, end_pos_Y = end.get_pos_X(), end.get_pos_Y()
 
         if start_pos_X==end_pos_X:
             dir_X=0
@@ -177,7 +176,7 @@ class Queen(Piece):
 
     def can_move(self,board,start,end):
         #We can't move to where a same color piece is
-        if end.get_piece().is_white() == self.is_white():
+        if end.get_piece()!=None and end.get_piece().is_white() == self.is_white():
             return False
         
         dif_x , dif_y = abs(start.get_pos_X()-end.get_pos_X()), abs(start.get_pos_Y()-end.get_pos_Y())
@@ -190,7 +189,7 @@ class Queen(Piece):
     def no_piece_in_between(self,board,start,end):
 
         start_pos_X, start_pos_Y = start.get_pos_X(), start.get_pos_Y()
-        end_pos_X, end_pos_Y = end.get_pos_X(), end.get_pos_X()
+        end_pos_X, end_pos_Y = end.get_pos_X(), end.get_pos_Y()
 
         if start_pos_X==end_pos_X:
             dir_X=0
@@ -225,7 +224,7 @@ class King(Piece):
 
     def can_move(self,board, start, end):
         #We can't move to where a same color piece is
-        if end.get_piece().is_white() == self.is_white():
+        if end.get_piece()!=None and end.get_piece().is_white() == self.is_white():
             return False
         
         dif_x , dif_y = abs(start.get_pos_X()-end.get_pos_X()), abs(start.get_pos_Y()-end.get_pos_Y())
@@ -240,7 +239,7 @@ class King(Piece):
         for row in board_matrix:
             for spot in row:
                 if spot!=end:
-                    if spot.get_piece().is_white()!=self.is_white() and spot.get_piece().can_move(board,spot,end):
+                    if spot.get_piece()!=None and spot.get_piece().is_white()!=self.is_white() and spot.get_piece().can_move(board,spot,end):
                         return False
         return True
 

@@ -4,7 +4,7 @@ from PyQt5.QtCore import Qt, QMimeData, pyqtSignal
 from PyQt5.QtGui import QDrag, QPixmap
 from game import Game  
 from player import *
-
+from move import Move
 
 class Case(QLabel):
     clicked = pyqtSignal(int, int)
@@ -24,31 +24,32 @@ class ChessboardWidget(QWidget):
         super().__init__()
         self.game = game
         self.initUI()
+        self.queue = []
 
     def initUI(self):
         self.grid_layout = QGridLayout()
+        self.setStyleSheet("background-color: white;")
+        self.grid_layout.setSpacing(0)
         self.setLayout(self.grid_layout)
-
         self.updateChessboard()
 
     def updateChessboard(self):
         for i in reversed(range(self.grid_layout.count())):
             widget = self.grid_layout.itemAt(i).widget()
             self.grid_layout.removeWidget(widget)
-            widget.deleteLater()
 
         size = min(self.width(), self.height())
         grid_size = 8
         cell_size = size / grid_size
 
-        board = self.game.get_board()
+        board = self.game.get_board().get_board()
         for row in range(grid_size):
             for col in range(grid_size):
                 spot = board[row][col]
                 if spot.get_piece() != None:
                     chess_piece = Case(spot.get_piece().get_name(), row, col)
                     chess_piece.setAlignment(Qt.AlignmentFlag.AlignCenter)
-                    chess_piece.setStyleSheet("background-color: #F0D9B5;" if (row + col) % 2 == 0 else "background-color: #B58863;")
+                    chess_piece.setStyleSheet(" border: 2px solid black; background-color: #F0D9B5;" if (row + col) % 2 == 0 else "border: 2px solid black; background-color: #B58863;")
                     self.pixmap = QPixmap(spot.get_piece().get_image())
                     chess_piece.setPixmap(self.pixmap)
                     chess_piece.setScaledContents(True)
@@ -58,34 +59,31 @@ class ChessboardWidget(QWidget):
                 else:
                     case = Case('',row,col)
                     case.setAlignment(Qt.AlignmentFlag.AlignCenter)
-                    case.setStyleSheet("background-color: #F0D9B5;" if (row + col) % 2 == 0 else "background-color: #B58863;")
+                    case.setStyleSheet("border: 2px solid black; background-color: #F0D9B5;" if (row + col) % 2 == 0 else "border: 2px solid black; background-color: #B58863;")
                     case.clicked.connect(self.onCaseClicked)
                     self.grid_layout.addWidget(case, row, col)
 
                 
     def onCaseClicked(self, row, col):
         print("Clicked on case:", row, col)
-        # You can now use the row and column indexes to handle the click event
-        # For example, you can call your game.make_move() method with the clicked coordinate
+        self.queue.append([row,col])
+        if (row,col) == self.queue[-1]:
+            self.queue.pop()
+        if len(self.queue) == 2:
+            end = self.queue.pop()
+            start = self.queue.pop()
+            end = self.game.get_board().get_spot(end[0],end[1])
+            start = self.game.get_board().get_spot(start[0],start[1])
+            move = Move(self.game.get_current(),start,end)
+            print(move)
+            print(self.game.make_move(self.game.get_current(),move))
+        self.updateChessboard()
+       
     
     def resizeEvent(self, event):
         self.updateChessboard()
 
-"""
-    def mousePressEvent(self, event):
-        super().mousePressEvent(event)
-        if event.button() == Qt.LeftButton:
-            for row in range(8):
-                for col in range(8):
-                    widget = self.grid_layout.itemAtPosition(row, col).widget()
-                    if widget.geometry().contains(event.pos()):
-                        piece = widget.piece
-                        if piece != ' ':
-                            # Get the piece name and make your move here using self.game.make_move()
-                            # For example, self.game.make_move((from_row, from_col), (to_row, to_col))
-                            # Don't forget to update the ChessboardWidget and MoveHistoryWidget afterward.
 
-"""
 class MoveHistoryWidget(QWidget):
     def __init__(self):
         super().__init__()

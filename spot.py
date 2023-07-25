@@ -12,13 +12,16 @@ class Spot:
         self.__piece = piece
 
     def get_pos_X(self):
-        return self.get_pos_X
+        return self.__pos_X
     
     def get_pos_Y(self):
-        return self.get_pos_Y
+        return self.__pos_Y
 
     def set_pos_X(self,x):
         self.__pos_X = x
 
     def set_pos_Y(self,y):
         self.__pos_Y = y
+    
+    def __str__(self) -> str:
+        return("("+str(self.__pos_X)+","+str(self.__pos_Y)+")")
